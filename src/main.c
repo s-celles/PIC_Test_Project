@@ -15,52 +15,29 @@
 #pragma config WRT = OFF        // Flash Program Memory Write Enable disabled
 #pragma config CP = OFF         // Flash Program Memory Code Protection disabled
 
-// Define crystal frequency (4MHz)
+/** Define crystal frequency (4MHz) */
 #define _XTAL_FREQ 4000000
 
+#define LED4 PORTCbits.RC2
+#define LED3 PORTCbits.RC1
+#define LED2 PORTCbits.RC0
+#define LED1 PORTAbits.RA5
+#define LED0 PORTAbits.RA3
+
+#define BUT0 PORTAbits.RA2
+#define BUT1 PORTAbits.RA1
+#define BUT2 PORTAbits.RA4
+
 void main(void) {
-    // Port configuration
-    TRISB = 0x00;           // Port B configured as output (all pins)
-    PORTB = 0x00;           // Initialize port B to 0
-    
-    // ADC configuration (disable to save power)
-    ADCON1 = 0x06;          // All AN pins as digital I/O
-    
+    TRISC = 0b00100000;
+    TRISA = 0b00010110;
+    TRISB = 0b00000000;
+    ADCON1 = 0b00000110;
+
     // Main loop
     while(1) {
-        // Blinking sequence optimized for 4MHz
-        
-        // Simple blinking
-        PORTB = 0xFF;           // Turn on all LEDs
-        __delay_ms(1000);       // Wait 1 second
-        PORTB = 0x00;           // Turn off all LEDs
-        __delay_ms(1000);       // Wait 1 second
-        
-        // Alternating blink pattern
-        PORTB = 0xAA;           // 10101010
-        __delay_ms(500);
-        PORTB = 0x55;           // 01010101
-        __delay_ms(500);
-        
-        // Fast blinking
-        for(int i = 0; i < 5; i++) {
-            PORTB = 0xFF;
-            __delay_ms(100);
-            PORTB = 0x00;
-            __delay_ms(100);
-        }
-        
-        __delay_ms(2000);       // 2 second pause before repeat
+        // Blinking sequence
+        LED4 = !LED4;        
+        __delay_ms(500);       // 500 ms before toggle
     }
 }
-
-/*
- * Hardware configuration for 4MHz:
- * - 4MHz crystal between OSC1/OSC2 with 22pF capacitors
- * - LEDs on PORTB with current limiting resistors (220-470 ohms)
- * - 100nF decoupling capacitor on VDD/VSS
- * - 10k pull-up resistor on MCLR if used
- * 
- * Note: With 4MHz, delays are more precise for small values
- * Maximum recommended __delay_ms(): 1000ms to avoid overflows
- */

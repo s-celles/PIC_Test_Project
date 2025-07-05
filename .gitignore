@@ -1,0 +1,52 @@
+# Build directories
+.pio/
+build/
+
+# XC8 temporary files
+*.p1
+*.d
+*.pre
+*.sym
+*.lst
+*.map
+*.hxl
+*.mum
+*.cmf
+*.rlf
+*.sdb
+*.o
+*.elf
+*.i
+memoryfile.xml
+__eeprom.*
+
+# System temporary files
+.vscode/
+.vs/
+*.tmp
+*.temp
+*~
+
+# Backup files
+*.bak
+*.orig
+
+# Python package build files
+xc8_wrapper/build/
+xc8_wrapper/dist/
+xc8_wrapper/*.egg-info/
+ipecmd_wrapper/build/
+ipecmd_wrapper/dist/
+ipecmd_wrapper/*.egg-info/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
