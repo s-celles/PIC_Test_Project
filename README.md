@@ -17,16 +17,6 @@ PIC_Test_Project/
 ├── src/
 │   └── main.c              # Main source code
 ├── build/                  # Build output directory
-├── xc8_wrapper/            # XC8 wrapper Python package
-│   ├── pyproject.toml      # Package configuration
-│   ├── README.md           # Package documentation
-│   ├── LICENSE             # Package license (MIT)
-│   └── xc8_wrapper/        # Package source code
-├── ipecmd_wrapper/         # IPECMD wrapper Python package
-│   ├── pyproject.toml      # Package configuration
-│   ├── README.md           # Package documentation
-│   ├── LICENSE             # Package license (MIT)
-│   └── ipecmd_wrapper/     # Package source code
 ├── compile.py              # Main compilation wrapper
 ├── upload.py               # Upload wrapper script
 ├── run_python.bat          # Batch file for easy execution
@@ -143,8 +133,8 @@ The project uses a modular Python-based build system with modern Python packages
 - **`upload.py`**: Upload wrapper that calls ipecmd-wrapper
 
 ### Python Packages
-- **`xc8_wrapper`**: XC8 toolchain wrapper package (CLI: `xc8-wrapper`)
-- **`ipecmd_wrapper`**: MPLAB IPE command-line wrapper package (CLI: `ipecmd-wrapper`)
+- **`xc8-wrapper`**: XC8 toolchain wrapper package (available at [github.com/s-celles/xc8-wrapper](https://github.com/s-celles/xc8-wrapper))
+- **`ipecmd-wrapper`**: MPLAB IPE command-line wrapper package (available at [github.com/s-celles/ipecmd-wrapper](https://github.com/s-celles/ipecmd-wrapper))
 
 ### Key Features
 - **Configurable**: All defaults as constants at the top of each script
@@ -156,15 +146,24 @@ The project uses a modular Python-based build system with modern Python packages
 
 ### Installation
 
-The project uses two modern Python packages for toolchain interaction:
+This project uses two modern Python packages for toolchain interaction. These packages are available as separate repositories:
 
+#### Option 1: Install from GitHub (Recommended)
 ```bash
-# Install the XC8 wrapper package
-cd xc8_wrapper
+# Install directly from GitHub repositories
+pip install git+https://github.com/s-celles/xc8-wrapper.git
+pip install git+https://github.com/s-celles/ipecmd-wrapper.git
+```
+
+#### Option 2: Development Installation
+```bash
+# Clone and install for development
+git clone https://github.com/s-celles/xc8-wrapper.git
+cd xc8-wrapper
 pip install -e .
 
-# Install the IPECMD wrapper package
-cd ../ipecmd_wrapper
+git clone https://github.com/s-celles/ipecmd-wrapper.git
+cd ipecmd-wrapper
 pip install -e .
 ```
 
@@ -172,9 +171,20 @@ After installation, you can use the CLI tools directly:
 - `xc8-wrapper` - XC8 toolchain wrapper
 - `ipecmd-wrapper` - MPLAB IPE command-line wrapper
 
+### Package Information
+- **xc8-wrapper**: [GitHub Repository](https://github.com/s-celles/xc8-wrapper)
+- **ipecmd-wrapper**: [GitHub Repository](https://github.com/s-celles/ipecmd-wrapper)
+
 ## XC8 Wrapper Package (xc8-wrapper) - Complete Reference
 
 The `xc8-wrapper` CLI tool is a comprehensive wrapper for the XC8 C compiler toolchain. It supports all major compilation and linking options through direct argument mapping.
+
+**Package Repository**: [github.com/s-celles/xc8-wrapper](https://github.com/s-celles/xc8-wrapper)
+
+### Installation
+```bash
+pip install git+https://github.com/s-celles/xc8-wrapper.git
+```
 
 ### Basic Usage
 
@@ -311,6 +321,13 @@ This will show all 80+ supported arguments with their descriptions.
 ## IPECMD Wrapper Package (ipecmd-wrapper) - Complete Reference
 
 The `ipecmd-wrapper` CLI tool is a comprehensive wrapper for Microchip's MPLAB IPE command-line interface (IPECMD). It provides a user-friendly interface for programming PIC microcontrollers.
+
+**Package Repository**: [github.com/s-celles/ipecmd-wrapper](https://github.com/s-celles/ipecmd-wrapper)
+
+### Installation
+```bash
+pip install git+https://github.com/s-celles/ipecmd-wrapper.git
+```
 
 ### Basic Usage
 
@@ -518,10 +535,13 @@ This shows every available option with detailed descriptions, making the wrapper
 These tools are **proprietary software owned exclusively by Microchip Technology Inc.** and are subject to Microchip's own license terms. You must obtain proper licenses from Microchip to use these tools.
 
 ### This Project's Wrapper Code
-The Python wrapper code in this project (`xc8_wrapper`, `ipecmd_wrapper`, and related scripts) is open source and released under the MIT License. This allows you to freely use, modify, and distribute the wrapper code itself.
+The Python wrapper code used in this project is available as separate open source packages:
+- **xc8-wrapper**: [GitHub Repository](https://github.com/s-celles/xc8-wrapper) (MIT License)
+- **ipecmd-wrapper**: [GitHub Repository](https://github.com/s-celles/ipecmd-wrapper) (MIT License)
 
 ### License Summary
-- **Wrapper Code**: MIT License (open source)
+- **Wrapper Packages**: MIT License (open source)
+- **This Project**: Apache 2.0 License (open source)
 - **Microchip Tools**: Proprietary Microchip licenses (separate licensing required)
 
 **You are responsible for obtaining proper licenses for any Microchip tools you use with these wrappers.**
@@ -535,10 +555,15 @@ The Python wrapper code in this project (`xc8_wrapper`, `ipecmd_wrapper`, and re
 
 ## License
 
-**This project contains wrapper tools for Microchip's proprietary software. Please read the licensing information carefully:**
+**This project uses wrapper tools for Microchip's proprietary software. Please read the licensing information carefully:**
 
-### Wrapper Code License
-The Python wrapper code in this project (including `xc8_wrapper`, `ipecmd_wrapper`, and related scripts) is released under the **MIT License**. See the LICENSE file for details.
+### This Project License
+This PIC test project is released under the **Apache 2.0 License**. See the LICENSE file for details.
+
+### Wrapper Packages License
+The Python wrapper packages used in this project are available as separate open source packages:
+- **xc8-wrapper**: [GitHub Repository](https://github.com/s-celles/xc8-wrapper) (MIT License)
+- **ipecmd-wrapper**: [GitHub Repository](https://github.com/s-celles/ipecmd-wrapper) (MIT License)
 
 ### Microchip Tools License
 The underlying tools (XC8 compiler, MPLAB X IDE, MPLAB IPE, etc.) are **proprietary software owned exclusively by Microchip Technology Inc.** and are subject to Microchip's own license terms. You must obtain proper licenses from Microchip to use these tools.
