@@ -1,7 +1,0 @@
-include README.md
-include LICENSE
-include DEVELOPMENT.md
-include demo.py
-recursive-include tests *.py
-global-exclude __pycache__
-global-exclude *.py[co]
