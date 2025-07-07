@@ -30,6 +30,7 @@ class Colors:
     RED = Fore.RED
     GRAY = Fore.LIGHTBLACK_EX
 
+
 # =============================================================================
 # CONFIGURATION CONSTANTS - Modify these to change default behavior
 # =============================================================================
@@ -100,17 +101,15 @@ def main():
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description="Simple compilation wrapper that calls xc8-wrapper with default arguments",
-        prog="compile.py"
+        prog="compile.py",
     )
-    
+
     parser.add_argument(
-        "--version",
-        action="version",
-        version=f"%(prog)s {__version__}"
+        "--version", action="version", version=f"%(prog)s {__version__}"
     )
-    
+
     args = parser.parse_args()
-    
+
     print_colored("=== COMPILE WRAPPER ===", Colors.CYAN)
 
     # Use the installed xc8-wrapper command

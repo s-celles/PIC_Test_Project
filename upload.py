@@ -29,6 +29,7 @@ class Colors:
     RED = Fore.RED
     GRAY = Fore.LIGHTBLACK_EX
 
+
 # Default values for CLI arguments
 DEFAULT_PART = "16F876A"
 DEFAULT_TOOL = "PK3"
@@ -46,14 +47,11 @@ def main():
 
     # Command line arguments
     parser = argparse.ArgumentParser(
-        description="Upload script for PIC microcontrollers",
-        prog="upload.py"
+        description="Upload script for PIC microcontrollers", prog="upload.py"
     )
-    
+
     parser.add_argument(
-        "--version",
-        action="version",
-        version=f"%(prog)s {__version__}"
+        "--version", action="version", version=f"%(prog)s {__version__}"
     )
     parser.add_argument(
         "--part",
