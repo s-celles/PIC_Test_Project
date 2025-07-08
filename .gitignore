@@ -54,3 +54,6 @@ __pycache__/
 # Wrappers
 xc8-wrapper/
 ipecmd-wrapper/
+
+# Proprietary files (not to be shared)
+vendor/
