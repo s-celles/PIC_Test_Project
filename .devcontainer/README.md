@@ -23,19 +23,19 @@ Ce devcontainer fournit un environnement de développement complet pour les micr
 3. Tapez "Dev Containers: Reopen in Container"
 4. Attendez la construction et la configuration automatique
 
-### 3. Première utilisation
+### 3. First use
 
-Une fois le container démarré, tous les outils sont configurés et prêts :
+Once the container is started, all tools are configured and ready:
 
 ```bash
-# Vérifier l'installation
+# Check installation
 xc8-wrapper --version
 ipecmd-wrapper --version
 
-# Compiler le projet
+# Compile the project
 python compile.py
 
-# Programmer le microcontrôleur (avec programmateur connecté)
+# Program the microcontroller (with programmer connected)
 python upload.py
 ```
 

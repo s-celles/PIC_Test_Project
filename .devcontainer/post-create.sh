@@ -70,20 +70,20 @@ else
     print_success "XC8 already installed"
 fi
 
-# Install wrapper packages from local directories
-print_status "Installing wrapper packages..."
-if [ -d "./xc8-wrapper" ]; then
-    pip3 install -e ./xc8-wrapper
+# Install wrapper packages from GitHub
+print_status "Installing wrapper packages from GitHub..."
+print_status "Installing xc8-wrapper..."
+if pip3 install git+https://github.com/s-celles/xc8-wrapper.git; then
     print_success "xc8-wrapper installed"
 else
-    print_warning "xc8-wrapper directory not found"
+    print_error "Failed to install xc8-wrapper"
 fi
 
-if [ -d "./ipecmd-wrapper" ]; then
-    pip3 install -e ./ipecmd-wrapper
+print_status "Installing ipecmd-wrapper..."
+if pip3 install git+https://github.com/s-celles/ipecmd-wrapper.git; then
     print_success "ipecmd-wrapper installed"
 else
-    print_warning "ipecmd-wrapper directory not found"
+    print_error "Failed to install ipecmd-wrapper"
 fi
 
 # Check XC8 installation
