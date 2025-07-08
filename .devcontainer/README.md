@@ -28,7 +28,7 @@ Once the container is started, all tools are configured and ready:
 
 ```bash
 # Check installation
-xc8-wrapper --version
+xc8-wrapper --help
 ipecmd-wrapper --version
 
 # Compile the project
@@ -48,7 +48,7 @@ python upload.py
 xc8-cc --version
 
 # Via Python wrapper (recommended)
-xc8-wrapper --tool cc --cpu PIC16F877A --xc8-version 3.00
+xc8-wrapper cc --cpu PIC16F877A --xc8-version 3.00
 ```
 
 ### Programming
@@ -81,11 +81,11 @@ python upload.py
 xc8-cc --version
 
 # Check xc8-wrapper
-xc8-wrapper --version
+xc8-wrapper --help
 
 # Compile example
 cd examples/blink
-xc8-wrapper --tool cc --xc8-version 3.00 --cpu PIC16F877A --source-dir . --main-c-file main.c
+xc8-wrapper cc --cpu PIC16F877A --xc8-version 3.00 --source-dir . --main-c-file main.c
 ```
 
 ### 4. Development

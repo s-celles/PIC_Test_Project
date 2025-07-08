@@ -61,7 +61,7 @@ python upload.py
 ### Method 2: Direct CLI Usage
 ```bash
 # Compile with xc8-wrapper
-xc8-wrapper --cpu PIC16F876A --xc8-version 3.00
+xc8-wrapper cc --cpu PIC16F876A --xc8-version 3.00
 
 # Upload with ipecmd-wrapper
 ipecmd-wrapper -P 16F876A -T PK3 -F build/main.hex -W 5.0 --ipecmd-version 6.20

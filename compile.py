@@ -118,6 +118,7 @@ def main():
     # Call xc8-wrapper with default arguments defined in this script
     cmd = [
         xc8_command,
+        "cc",  # Use cc tool
         "--xc8-version",
         DEFAULT_XC8_VERSION,
         "--cpu",
