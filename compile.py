@@ -148,7 +148,7 @@ def main():
         sys.exit(result.returncode)
 
     except Exception as e:
-        print_colored(f"✗ Error running xc8-wrapper: {e}", Colors.RED)
+        print_colored(f"[ERROR] Error running xc8-wrapper: {e}", Colors.RED)
         sys.exit(1)
 
 

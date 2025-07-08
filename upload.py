@@ -139,14 +139,14 @@ def main():
     try:
         result = subprocess.run(upload_cmd)
         if result.returncode == 0:
-            print_colored("\n✓ Upload successful", Colors.GREEN)
+            print_colored("\n[OK] Upload successful", Colors.GREEN)
         else:
             print_colored(
-                f"\n✗ Upload failed with return code {result.returncode}", Colors.RED
+                f"\n[ERROR] Upload failed with return code {result.returncode}", Colors.RED
             )
             sys.exit(result.returncode)
     except Exception as e:
-        print_colored(f"\n✗ Error running upload: {e}", Colors.RED)
+        print_colored(f"\n[ERROR] Error running upload: {e}", Colors.RED)
         sys.exit(1)
 
 
