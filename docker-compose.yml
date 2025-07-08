@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  pic-dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: pic-development
+    volumes:
+      - .:/workspaces/pic-project
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - xc8-cache:/opt/microchip
+    working_dir: /workspaces/pic-project
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - PATH=/opt/microchip/bin:/opt/microchip/mplabx/v6.25/mplab_platform/bin:/home/vscode/.local/bin:$PATH
+      - XC8_PATH=/opt/microchip/bin
+      - MPLABX_PATH=/opt/microchip/mplabx/v6.25
+      - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+      - PYTHONPATH=/workspaces/pic-project
+    user: vscode
+    stdin_open: true
+    tty: true
+    network_mode: host
+    command: /bin/bash
+
+  # Service for build-only (no GUI)
+  pic-build:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: pic-build-only
+    volumes:
+      - .:/workspaces/pic-project
+      - xc8-cache:/opt/microchip
+    working_dir: /workspaces/pic-project
+    environment:
+      - PATH=/opt/microchip/bin:/home/vscode/.local/bin:$PATH
+      - XC8_PATH=/opt/microchip/bin
+      - PYTHONPATH=/workspaces/pic-project
+    user: vscode
+    command: python compile.py
+
+  # Service pour tests automatisés
+  test:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    environment:
+      - PYTHONPATH=/workspace
+    user: vscode
+    command: python3 -m pytest -v --cov=xc8_wrapper
+
+  # Service pour compilation d'exemples
+  compile:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - .:/workspace
+    working_dir: /workspace/examples/blink
+    environment:
+      - PATH=/opt/microchip/xc8/v3.00/bin:/home/vscode/.local/bin:$PATH
+    user: vscode
+    command: xc8-wrapper --tool cc --xc8-version 3.00 --cpu PIC16F877A --source-dir . --main-c-file main.c --verbose
+
+volumes:
+  xc8-cache:
+    driver: local
