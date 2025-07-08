@@ -5,6 +5,7 @@ This script calls ipecmd-wrapper
 """
 
 import os
+from pathlib import Path
 import sys
 import subprocess
 import argparse
@@ -35,7 +36,7 @@ DEFAULT_PART = "16F876A"
 DEFAULT_TOOL = "PK3"
 DEFAULT_IPECMD_VERSION = "6.20"
 DEFAULT_POWER = "4.875"
-DEFAULT_HEX_FILE = "build\\main.hex"
+DEFAULT_HEX_FILE = Path("build/main.hex")
 DEFAULT_TEST_PROGRAMMER = False
 DEFAULT_ERASE = False
 DEFAULT_VERIFY = ""
@@ -80,7 +81,7 @@ def main():
     )
     parser.add_argument(
         "--file",
-        default=DEFAULT_HEX_FILE,
+        default=str(DEFAULT_HEX_FILE),
         help=f"Hex file to upload (default: {DEFAULT_HEX_FILE})",
     )
     parser.add_argument(

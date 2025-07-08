@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     software-properties-common \
     libc6-dev \
+    libusb-1.0.0 \
+    openjdk-8-jre \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user

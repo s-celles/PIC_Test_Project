@@ -22,7 +22,16 @@ services:
     stdin_open: true
     tty: true
     network_mode: host
-    command: /bin/bash
+    privileged: true
+    cap_add:
+      - SYS_RAWIO
+    volumes:
+      - .:/workspaces/pic-project
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - xc8-cache:/opt/microchip
+      - /dev:/dev:rw
+      - /run/udev:/run/udev:ro
+    command: /bin/bashZ
 
   # Service for build-only (no GUI)
   pic-build:

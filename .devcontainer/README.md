@@ -1,27 +1,26 @@
 # PIC Development Container
 
-Ce devcontainer fournit un environnement de développement complet pour les microcontrôleurs PIC avec :
+This devcontainer provides a complete development environment for PIC microcontrollers with:
 
-- **XC8 Compiler v2.50** : Compilateur C pour microcontrôleurs PIC
-- **MPLAB X IDE v6.25** : Environnement de développement intégré de Microchip
-- **xc8-wrapper** et **ipecmd-wrapper** : Wrappers Python modernes
-- **Java 8** : Requis pour MPLAB X IDE
-- **Extensions VS Code** : Support C/C++, Python, debugging, etc.
+- **XC8 Compiler v3.00** : C compiler for PIC microcontrollers
+- **xc8-wrapper** and **ipecmd-wrapper** : Modern Python wrappers
+- **Development tools** : Python, build tools, VS Code extensions
+- **Cross-platform support** : Works on Windows, Linux, and macOS
 
-## 🚀 Démarrage rapide
+## 🚀 Quick Start
 
-### 1. Pré-requis
+### 1. Prerequisites
 
-- **Docker Desktop** installé et fonctionnel
-- **VS Code** avec l'extension "Dev Containers"
-- **X11 forwarding** configuré pour l'interface graphique (Linux/macOS)
+- **Docker Desktop** installed and running
+- **VS Code** with "Dev Containers" extension
+- **X11 forwarding** configured for GUI support (Linux/macOS)
 
-### 2. Lancement du devcontainer
+### 2. Launch the devcontainer
 
-1. Ouvrez ce projet dans VS Code
-2. Appuyez sur `Ctrl+Shift+P` (ou `Cmd+Shift+P` sur macOS)
-3. Tapez "Dev Containers: Reopen in Container"
-4. Attendez la construction et la configuration automatique
+1. Open this project in VS Code
+2. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS)
+3. Type "Dev Containers: Reopen in Container"
+4. Wait for automatic build and configuration
 
 ### 3. First use
 
@@ -39,131 +38,107 @@ python compile.py
 python upload.py
 ```
 
-## 🛠️ Outils disponibles
+⚠️ **Note**: HEX file upload from dev containers has not been tested yet. For programming, you may need to use the host system or copy files outside the container.
 
-### Compilateur XC8
+## 🛠️ Available Tools
+
+### XC8 Compiler
 ```bash
-# Utilisation directe
+# Direct usage
 xc8-cc --version
 
-# Via wrapper Python (recommandé)
-xc8-wrapper --tool cc --cpu PIC16F877A --xc8-version 2.50
+# Via Python wrapper (recommended)
+xc8-wrapper --tool cc --cpu PIC16F877A --xc8-version 3.00
 ```
 
-### MPLAB X IDE
-
-#### Interface graphique (nécessite X11 forwarding)
+### Programming
 ```bash
-# Lance MPLAB X IDE avec interface graphique
-mplab-gui
-```
-
-#### Ligne de commande
-```bash
-# Commandes MPLAB en ligne de commande
-mplab --help
-```
-
-### Programmation
-```bash
-# Avec ipecmd-wrapper
+# With ipecmd-wrapper
 ipecmd-wrapper -P 16F877A -T PK3 -F build/main.hex
 
-# Ou avec le script Python
+# Or with Python script
 python upload.py
 ```
 
-## Utilisation
+## Usage
 
-### 1. Ouvrir dans VS Code
+### 1. Open in VS Code
 
-1. Assurez-vous d'avoir VS Code avec l'extension "Dev Containers" installée
-2. Ouvrez ce projet dans VS Code
-3. Cliquez sur "Reopen in Container" quand VS Code le propose
-4. Attendez que le container se construise (peut prendre plusieurs minutes)
+1. Make sure you have VS Code with "Dev Containers" extension installed
+2. Open this project in VS Code
+3. Click "Reopen in Container" when VS Code prompts
+4. Wait for the container to build (may take several minutes)
 
-### 2. Si la construction échoue
+### 2. If build fails
 
-1. Vérifiez votre connexion internet
-2. Essayez la version simple : renommez `devcontainer.simple.json` → `devcontainer.json`
-3. Ou utilisez Docker manuellement (voir ci-dessus)
+1. Check your internet connection
+2. Or use Docker manually (see below)
 
-### 3. Tester l'installation
+### 3. Test installation
 
 ```bash
-# Vérifier XC8 (après installation automatique)
+# Check XC8 (after automatic installation)
 xc8-cc --version
 
-# Vérifier xc8-wrapper
+# Check xc8-wrapper
 xc8-wrapper --version
 
-# Compiler l'exemple
+# Compile example
 cd examples/blink
 xc8-wrapper --tool cc --xc8-version 3.00 --cpu PIC16F877A --source-dir . --main-c-file main.c
 ```
 
-### 4. Développer
+### 4. Development
 
-Le container inclut tous les outils nécessaires pour :
-- Développer en C pour PIC
-- Modifier et tester xc8-wrapper
-- Utiliser les outils de debug et d'analyse
+The container includes all necessary tools for:
+- Developing in C for PIC
+- Modifying and testing xc8-wrapper
+- Using debug and analysis tools
 
-## Structure du projet
+## Supported Microcontrollers
 
-```
-.devcontainer/
-├── devcontainer.json        # Configuration principale
-├── devcontainer.simple.json # Configuration simplifiée (fallback)
-├── Dockerfile              # Image Docker avec installation XC8
-├── Dockerfile.simple       # Image Docker simple (XC8 installé après)
-├── post-create.sh          # Script de post-installation
-└── README.md              # Ce fichier
+The XC8 compiler supports all 8-bit PICs, including:
+- PIC10F, PIC12F, PIC16F, PIC18F families
+- Popular examples: PIC16F877A, PIC18F4520, PIC12F675
 
-examples/
-└── blink/
-    ├── main.c             # Code exemple LED blink
-    └── README.md          # Instructions
-```
+## Troubleshooting
 
-## Microcontrôleurs supportés
+### Container won't build
+- **Network issue**: Check your internet connection (XC8 download ~500MB)
+- **Disk space**: Make sure you have enough space (~2GB)
+- **Timeout**: XC8 download can be slow, try multiple times
 
-Le compilateur XC8 supporte tous les PIC 8 bits, incluant :
-- PIC10F, PIC12F, PIC16F, PIC18F
-- Exemples populaires : PIC16F877A, PIC18F4520, PIC12F675
-
-## Dépannage
-
-### Container ne se construit pas
-- **Problème réseau** : Vérifiez votre connexion internet (téléchargement XC8 ~500MB)
-- **Espace disque** : Assurez-vous d'avoir suffisamment d'espace (~2GB)
-- **Timeout** : Le téléchargement XC8 peut être lent, essayez plusieurs fois
-
-**Solution rapide** : Utilisez la version simple
+**Quick solution**: Use Docker manually
 ```bash
-cp .devcontainer/devcontainer.simple.json .devcontainer/devcontainer.json
+docker build -t pic-dev .devcontainer/
+docker run -it --rm -v ${PWD}:/workspace pic-dev
 ```
 
-### XC8 non trouvé après installation
+### XC8 not found after installation
 ```bash
-# Vérifier l'installation
-ls -la /opt/microchip/xc8/v3.00/bin/
+# Check installation
+ls -la /opt/microchip/bin/
 
-# Ajouter au PATH manuellement
-export PATH="/opt/microchip/xc8/v3.00/bin:$PATH"
+# Add to PATH manually
+export PATH="/opt/microchip/bin:$PATH"
 
-# Ou réinstaller avec le script
+# Or reinstall with script
 bash .devcontainer/post-create.sh
 ```
 
-### Compilation échoue
-- Vérifiez le nom exact du MCU (sensible à la casse)
-- Utilisez `--verbose` pour plus de détails
-- Consultez la documentation XC8
+### Compilation fails
+- Check exact MCU name (case sensitive)
+- Use `--verbose` for more details
+- Consult XC8 documentation
 
-### Permissions Docker sur Windows
+### Programming issues
+- **Hardware connection**: Ensure programmer is connected to host system
+- **USB passthrough**: Docker may not have direct access to USB devices
+- **Alternative**: Copy HEX files to host system for programming
+
+### Docker permissions on Windows
 ```bash
-# Si problème de permissions sur Windows
+# If permission issues on Windows
 docker run --rm -it -v ${PWD}:/workspace -w /workspace ubuntu:22.04 bash
 ```
 
@@ -171,31 +146,45 @@ docker run --rm -it -v ${PWD}:/workspace -w /workspace ubuntu:22.04 bash
 
 ### Docker Compose
 ```bash
-# Développement avec docker-compose
+# Development with docker-compose
 docker-compose up xc8-dev
 
 # Tests
 docker-compose run test
 
-# Compilation d'exemple
+# Compilation example
 docker-compose run compile
 ```
 
-### Installation manuelle de XC8
-Si l'installation automatique échoue :
+### Manual XC8 installation
+If automatic installation fails:
 
-1. Téléchargez manuellement depuis [Microchip](https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers)
-2. Copiez le fichier `.run` dans le container
-3. Exécutez l'installation manuelle
+1. Download manually from [Microchip](https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers)
+2. Copy the `.run` file into the container
+3. Run manual installation
 
 ```bash
-# Dans le container
+# In the container
 sudo ./xc8-v3.00-full-install-linux-x64-installer.run --mode unattended --prefix /opt/microchip
 ```
 
-## Ressources
+## Programming from Container Limitations
 
-- [Documentation XC8](https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers)
+⚠️ **Important**: Programming microcontrollers directly from dev containers has limitations:
+
+1. **USB Access**: Docker containers may not have direct access to USB programmers
+2. **Device Permissions**: Hardware programmers require specific permissions
+3. **Host Integration**: Physical hardware is typically connected to the host system
+
+**Recommended workflow**:
+1. Develop and compile in the container
+2. Copy generated HEX files to the host system
+3. Use host-based programming tools (MPLAB X IPE, PICkit software)
+
+## Resources
+
+- [XC8 Documentation](https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers)
 - [xc8-wrapper GitHub](https://github.com/s-celles/xc8-wrapper)
-- [Datasheets PIC](https://www.microchip.com/en-us/products/microcontrollers-and-microprocessors/8-bit-mcus)
+- [ipecmd-wrapper GitHub](https://github.com/s-celles/ipecmd-wrapper)
+- [PIC Datasheets](https://www.microchip.com/en-us/products/microcontrollers-and-microprocessors/8-bit-mcus)
 - [VS Code Dev Containers](https://code.visualstudio.com/docs/remote/containers)
