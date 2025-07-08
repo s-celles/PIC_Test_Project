@@ -10,10 +10,12 @@
 #
 # Example:
 #
-#./ipecmd.sh -c -p /dev/ttyUSB0 -b 115200 -f /home/user/my_project/my_project.hex
-
-java -jar /opt/microchip/mplabx/v6.20/mplab_platform/mplab_ipe/ipecmd.jar "$@"
-
+# ./ipecmd.sh -?  # Displays help information
+# ./ipecmd.sh -c -p /dev/ttyUSB0 -b 115200 -f /home/user/my_project/my_project.hex
+#
 # Usage in Python script:
 #
 # python3 upload.py --ipecmd-path="./ipecmd.sh"
+
+java -jar /opt/microchip/mplabx/v6.20/mplab_platform/mplab_ipe/ipecmd.jar "$@"
+
