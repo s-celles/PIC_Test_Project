@@ -22,7 +22,7 @@ DEFAULT_CPU = "PIC16F876A"
 # Build configuration
 BUILD_DIR = "build"
 SOURCE_DIR = "src"
-MAIN_C_FILE = "main.c"
+MAIN_C_FILE = "simple/main.c"
 OUTPUT_HEX = "main.hex"
 OUTPUT_ELF = "main.elf"
 OUTPUT_P1 = "main.p1"
