@@ -23,20 +23,6 @@ The program blinks LEDs connected to uC.
 4. **Compile**: `python compile.py`
 5. **Upload**: `python upload.py` (with programmer connected)
 
-## Project Structure
-```
-PIC_Test_Project/
-├── src/
-│   └── main.c              # Main source code
-├── build/                  # Build output directory
-├── compile.py              # Main compilation wrapper
-├── upload.py               # Upload wrapper script
-├── run_python.bat          # Batch file for easy execution
-├── platformio.ini          # PlatformIO configuration (optional)
-├── LICENSE                 # Project license (Apache 2.0)
-└── README.md               # This file
-```
-
 ## Hardware Configuration
 
 ### Required Components
@@ -54,7 +40,7 @@ PIC_Test_Project/
 # Compile the project
 python compile.py
 
-# Program with PICkit3/PICkit4
+# Program with PICkit2/PICkit3/PICkit4
 python upload.py
 ```
 
