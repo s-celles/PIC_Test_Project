@@ -1,6 +1,7 @@
 # Build directories
 .pio/
 build/
+output/
 
 # XC8 temporary files
 *.p1

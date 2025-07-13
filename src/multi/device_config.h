@@ -56,6 +56,8 @@
 #ifndef DEVICE_CONFIG_H
 #define DEVICE_CONFIG_H
 
+#ifndef _XTAL_FREQ
 #define _XTAL_FREQ 4000000  // External crystal frequency (4MHz)
+#endif
 
 #endif

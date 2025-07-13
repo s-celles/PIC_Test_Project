@@ -1,0 +1,71 @@
+graph TD
+    subgraph "Source Files"
+        C1[main.c<br/>📄 Main program]
+        C2[device_config.c<br/>📄 Hardware config]
+        C3[pin_manager.c<br/>📄 Pin management]
+        C4[timer0.c<br/>📄 Timer functions]
+    end
+    
+    subgraph "Compilation Mode Choice"
+        MODE{Compilation Mode}
+        MODE -->|--separate| SEP[Separate Compilation]
+        MODE -->|--monolithic| MONO[Monolithic Compilation]
+    end
+    
+    subgraph "Separate Compilation Flow"
+        C1 -->|xc8-cc -c| P1_1[main.p1<br/>🔧 Object file]
+        C2 -->|xc8-cc -c| P1_2[device_config.p1<br/>🔧 Object file]
+        C3 -->|xc8-cc -c| P1_3[pin_manager.p1<br/>🔧 Object file]
+        C4 -->|xc8-cc -c| P1_4[timer0.p1<br/>🔧 Object file]
+        
+        P1_1 -->|Linking| LINK[🔗 xc8-cc linker]
+        P1_2 --> LINK
+        P1_3 --> LINK
+        P1_4 --> LINK
+    end
+    
+    subgraph "Monolithic Compilation Flow"
+        C1 -->|Direct| MONO_COMP[🔨 xc8-cc all files]
+        C2 --> MONO_COMP
+        C3 --> MONO_COMP
+        C4 --> MONO_COMP
+    end
+    
+    subgraph "Generated Files"
+        LINK -->|Produces| ELF[project.elf<br/>📦 Executable & Linkable Format<br/>Contains debug info]
+        LINK -->|Produces| MAP[project.map<br/>📋 Memory map<br/>Shows memory usage]
+        LINK -->|Produces| XML[memory_summary.xml<br/>📊 Memory statistics<br/>RAM/ROM usage details]
+        LINK -->|Produces| HEX[project.hex<br/>⚡ Intel HEX format<br/>Ready for programming]
+        
+        MONO_COMP -->|Direct output| HEX2[project.hex<br/>⚡ Intel HEX format<br/>Ready for programming]
+    end
+    
+    subgraph "Final Output"
+        HEX -->|Copy to| FINAL[output/pic_test_project.hex<br/>🎯 Final firmware<br/>Ready for PIC programmer]
+        HEX2 --> FINAL
+    end
+    
+    subgraph "File Roles Legend"
+        LEGEND1[".c files: Source code in C language"]
+        LEGEND2[".p1 files: Compiled object files (PIC format)"]
+        LEGEND3[".elf files: Executable with debug symbols"]
+        LEGEND4[".map files: Memory allocation map"]
+        LEGEND5[".hex files: Programming format for microcontroller"]
+    end
+    
+    style C1 fill:#e1f5fe
+    style C2 fill:#e1f5fe
+    style C3 fill:#e1f5fe
+    style C4 fill:#e1f5fe
+    style P1_1 fill:#fff3e0
+    style P1_2 fill:#fff3e0
+    style P1_3 fill:#fff3e0
+    style P1_4 fill:#fff3e0
+    style ELF fill:#f3e5f5
+    style MAP fill:#e8f5e8
+    style XML fill:#e8f5e8
+    style HEX fill:#ffebee
+    style HEX2 fill:#ffebee
+    style FINAL fill:#e53935,color:#fff
+    style LINK fill:#ffd54f
+    style MONO_COMP fill:#ffd54f
