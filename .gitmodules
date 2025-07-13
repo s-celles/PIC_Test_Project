@@ -7,3 +7,7 @@
 	path = ipecmd-wrapper
 	url = https://github.com/s-celles/ipecmd-wrapper/
 	branch = main
+[submodule "platform-pic8bit"]
+	path = platform-pic8bit
+	url = https://github.com/s-celles/platform-pic8bit
+	branch = main
