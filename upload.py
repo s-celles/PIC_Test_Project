@@ -4,15 +4,48 @@ Upload script for PIC microcontrollers
 This script calls ipecmd-wrapper
 """
 
-import os
 from pathlib import Path
-import sys
-import subprocess
-import argparse
+import typer
 from logger import log
+
+# Import ipecmd_wrapper directly to avoid subprocess
+from ipecmd_wrapper.core import program_pic
 
 # Version information
 __version__ = "0.1.0"
+
+
+# Args class to mimic argument structure for ipecmd_wrapper.core.program_pic
+class Args:
+    """Simple namespace class to hold upload arguments"""
+
+    def __init__(
+        self,
+        part: str,
+        tool: str,
+        file: str,
+        ipecmd_version: str = None,
+        ipecmd_path: str = None,
+        power: str = "5.0",
+        test_programmer: bool = False,
+        erase: bool = False,
+        verify: str = "",
+        memory: str = "",
+        vdd_first: bool = False,
+        logout: bool = True,  # Default to True for upload script
+    ):
+        self.part = part
+        self.tool = tool
+        self.file = file
+        self.ipecmd_version = ipecmd_version
+        self.ipecmd_path = ipecmd_path
+        self.power = power
+        self.test_programmer = test_programmer
+        self.erase = erase
+        self.verify = verify
+        self.memory = memory
+        self.vdd_first = vdd_first
+        self.logout = logout
 
 
 # Default values for CLI arguments
@@ -27,108 +60,99 @@ DEFAULT_VERIFY = ""
 DEFAULT_IPECMD_PATH = ""
 
 
-def main():
+# Create the Typer app
+app = typer.Typer(help="Upload script for PIC microcontrollers")
+
+
+def version_callback(value: bool):
+    """Show version information"""
+    if value:
+        typer.echo(f"upload.py {__version__}")
+        raise typer.Exit()
+
+
+@app.command()
+def main(
+    part: str = typer.Option(
+        DEFAULT_PART, "--part", help=f"Target PIC part (default: {DEFAULT_PART})"
+    ),
+    tool: str = typer.Option(
+        DEFAULT_TOOL, "--tool", help=f"Programming tool (default: {DEFAULT_TOOL})"
+    ),
+    ipecmd_version: str = typer.Option(
+        DEFAULT_IPECMD_VERSION,
+        "--ipecmd-version",
+        help=f"MPLAB IPE version to use (default: {DEFAULT_IPECMD_VERSION})",
+    ),
+    ipecmd_path: str = typer.Option(
+        DEFAULT_IPECMD_PATH,
+        "--ipecmd-path",
+        help="Full path to ipecmd.exe (overrides --ipecmd-version)",
+    ),
+    power: str = typer.Option(
+        DEFAULT_POWER,
+        "--power",
+        help=f"Power target from tool (VDD voltage, default: {DEFAULT_POWER})",
+    ),
+    file: str = typer.Option(
+        str(DEFAULT_HEX_FILE),
+        "--file",
+        help=f"Hex file to upload (default: {DEFAULT_HEX_FILE})",
+    ),
+    test_programmer: bool = typer.Option(
+        DEFAULT_TEST_PROGRAMMER,
+        "--test-programmer",
+        help="Test programmer detection before programming",
+    ),
+    erase: bool = typer.Option(
+        DEFAULT_ERASE, "--erase", help="Erase Flash Device before programming"
+    ),
+    verify: str = typer.Option(
+        DEFAULT_VERIFY,
+        "--verify",
+        help="Verify Device memory regions (P=Program, E=EEPROM, I=ID, C=Configuration, B=Boot, A=Auxiliary)",
+    ),
+    version: bool = typer.Option(
+        False,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version and exit",
+    ),
+):
+    """Upload HEX file to PIC microcontroller using ipecmd-wrapper"""
     log.info("=== UPLOAD HEX FILE TO PIC ===")
 
-    # Command line arguments
-    parser = argparse.ArgumentParser(
-        description="Upload script for PIC microcontrollers", prog="upload.py"
+    # Create Args object for ipecmd_wrapper.core.program_pic
+    args = Args(
+        part=part,
+        tool=tool,
+        file=file,
+        ipecmd_version=ipecmd_version if not ipecmd_path else None,
+        ipecmd_path=ipecmd_path if ipecmd_path else None,
+        power=power,
+        test_programmer=test_programmer,
+        erase=erase,
+        verify=verify,
+        logout=True,  # Always logout after programming
     )
 
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {__version__}"
-    )
-    parser.add_argument(
-        "--part",
-        default=DEFAULT_PART,
-        help=f"Target PIC part (default: {DEFAULT_PART})",
-    )
-    parser.add_argument(
-        "--tool",
-        default=DEFAULT_TOOL,
-        help=f"Programming tool (default: {DEFAULT_TOOL})",
-    )
-    parser.add_argument(
-        "--ipecmd-version",
-        default=DEFAULT_IPECMD_VERSION,
-        help=f"MPLAB IPE version to use (default: {DEFAULT_IPECMD_VERSION})",
-    )
-    parser.add_argument(
-        "--ipecmd-path",
-        default=DEFAULT_IPECMD_PATH,
-        help="Full path to ipecmd.exe (overrides --ipecmd-version)",
-    )
-    parser.add_argument(
-        "--power",
-        default=DEFAULT_POWER,
-        help=f"Power target from tool (VDD voltage, default: {DEFAULT_POWER})",
-    )
-    parser.add_argument(
-        "--file",
-        default=str(DEFAULT_HEX_FILE),
-        help=f"Hex file to upload (default: {DEFAULT_HEX_FILE})",
-    )
-    parser.add_argument(
-        "--test-programmer",
-        action="store_true",
-        default=DEFAULT_TEST_PROGRAMMER,
-        help="Test programmer detection before programming",
-    )
-    parser.add_argument(
-        "--erase",
-        action="store_true",
-        default=DEFAULT_ERASE,
-        help="Erase Flash Device before programming",
-    )
-    parser.add_argument(
-        "--verify",
-        default=DEFAULT_VERIFY,
-        help="Verify Device memory regions (P=Program, E=EEPROM, I=ID, C=Configuration, B=Boot, A=Auxiliary)",
-    )
-
-    args = parser.parse_args()
-
-    # Build the ipecmd command using the ipecmd_wrapper package
-    upload_cmd = [
-        "ipecmd-wrapper",
-        args.part,
-        args.tool,
-        "--power",
-        args.power,
-        "--file",
-        args.file,
-        "--logout",  # Always logout after programming
-    ]
-
-    # Add either ipecmd-path or version
-    if args.ipecmd_path:
-        upload_cmd.extend(["--ipecmd-path", args.ipecmd_path])
-    else:
-        upload_cmd.extend(["--ipecmd-version", args.ipecmd_version])
-
-    # Add optional arguments
-    if args.test_programmer:
-        upload_cmd.append("--test-programmer")
-
-    if args.erase:
-        upload_cmd.append("--erase")
-
-    if args.verify:
-        upload_cmd.extend(["--verify", args.verify])
-
-    log.info(f"Running: {' '.join(upload_cmd)}")
+    log.debug(f"Programming PIC {part} with {tool} using {file}")
 
     try:
-        result = subprocess.run(upload_cmd)
-        if result.returncode == 0:
-            log.info("✓ Upload successful")
+        # Call ipecmd_wrapper directly instead of subprocess
+        program_pic(args)
+        log.info("✓ Upload successful")
+    except SystemExit as e:
+        if e.code != 0:
+            log.error(f"✗ Upload failed with exit code {e.code}")
+            raise typer.Exit(e.code)
         else:
-            log.error(f"✗ Upload failed with return code {result.returncode}")
-            sys.exit(result.returncode)
+            log.info("✓ Upload successful")
     except Exception as e:
         log.error(f"✗ Error running upload: {e}")
-        sys.exit(1)
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":
-    main()
+    app()
