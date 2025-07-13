@@ -1,7 +1,9 @@
 [submodule "xc8-wrapper"]
 	path = xc8-wrapper
 	url = https://github.com/s-celles/xc8-wrapper/
+	branch = main
 
 [submodule "ipecmd-wrapper"]
 	path = ipecmd-wrapper
 	url = https://github.com/s-celles/ipecmd-wrapper/
+	branch = main
