@@ -51,10 +51,6 @@ __pycache__/
 *.swp
 *.swo
 
-# Wrappers
-xc8-wrapper/
-ipecmd-wrapper/
-
 # Vendor files
 MPLABXLog.xml
 vendor/
