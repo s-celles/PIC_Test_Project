@@ -1,5 +1,6 @@
-# Use Ubuntu 22.04 as base
-FROM ubuntu:22.04
+# Use base image for the development container
+#FROM ubuntu:22.04
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
 
 # Avoid interactive prompts during installation
 ENV DEBIAN_FRONTEND=noninteractive
@@ -25,8 +26,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
-RUN useradd -m -s /bin/bash vscode && \
-    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# RUN useradd -m -s /bin/bash vscode && \
+#    echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Create destination directory for XC8 (will be installed later)
 RUN mkdir -p /opt/microchip && \
