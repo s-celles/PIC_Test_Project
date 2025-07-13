@@ -9,26 +9,10 @@ from pathlib import Path
 import sys
 import subprocess
 import argparse
-from colorama import init, Fore, Style
-
-# Initialize colorama for cross-platform support
-init(autoreset=True)
+from logger import log
 
 # Version information
 __version__ = "0.1.0"
-
-
-def print_colored(text: str, color: str) -> None:
-    """Print text with specified color using colorama"""
-    print(f"{color}{text}{Style.RESET_ALL}")
-
-
-# Color constants
-class Colors:
-    CYAN = Fore.CYAN
-    GREEN = Fore.GREEN
-    RED = Fore.RED
-    GRAY = Fore.LIGHTBLACK_EX
 
 
 # Default values for CLI arguments
@@ -44,7 +28,7 @@ DEFAULT_IPECMD_PATH = ""
 
 
 def main():
-    print_colored("=== UPLOAD HEX FILE TO PIC ===", Colors.CYAN)
+    log.info("=== UPLOAD HEX FILE TO PIC ===")
 
     # Command line arguments
     parser = argparse.ArgumentParser(
@@ -107,15 +91,13 @@ def main():
     # Build the ipecmd command using the ipecmd_wrapper package
     upload_cmd = [
         "ipecmd-wrapper",
-        "-P",
         args.part,
-        "-T",
         args.tool,
-        "-W",
+        "--power",
         args.power,
-        "-F",
+        "--file",
         args.file,
-        "-OL",  # Always logout after programming
+        "--logout",  # Always logout after programming
     ]
 
     # Add either ipecmd-path or version
@@ -129,24 +111,22 @@ def main():
         upload_cmd.append("--test-programmer")
 
     if args.erase:
-        upload_cmd.append("-E")
+        upload_cmd.append("--erase")
 
     if args.verify:
-        upload_cmd.extend(["-Y", args.verify])
+        upload_cmd.extend(["--verify", args.verify])
 
-    print_colored(f"Running: {' '.join(upload_cmd)}", Colors.GRAY)
+    log.info(f"Running: {' '.join(upload_cmd)}")
 
     try:
         result = subprocess.run(upload_cmd)
         if result.returncode == 0:
-            print_colored("\n✓ Upload successful", Colors.GREEN)
+            log.info("✓ Upload successful")
         else:
-            print_colored(
-                f"\n✗ Upload failed with return code {result.returncode}", Colors.RED
-            )
+            log.error(f"✗ Upload failed with return code {result.returncode}")
             sys.exit(result.returncode)
     except Exception as e:
-        print_colored(f"\n✗ Error running upload: {e}", Colors.RED)
+        log.error(f"✗ Error running upload: {e}")
         sys.exit(1)
 
 

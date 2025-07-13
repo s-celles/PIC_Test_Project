@@ -3,32 +3,12 @@
 Simple compilation wrapper that calls xc8-wrapper with default arguments
 """
 
-import sys
-import subprocess
-import os
-import argparse
-from pathlib import Path
-from colorama import init, Fore, Style
-
-# Initialize colorama for cross-platform support
-init(autoreset=True)
+import typer
+from logger import log
+from xc8_wrapper.core import handle_cc_tool
 
 # Version information
 __version__ = "0.1.0"
-
-
-def print_colored(text: str, color: str) -> None:
-    """Print text with specified color using colorama"""
-    print(f"{color}{text}{Style.RESET_ALL}")
-
-
-# Color constants
-class Colors:
-    CYAN = Fore.CYAN
-    GREEN = Fore.GREEN
-    YELLOW = Fore.YELLOW
-    RED = Fore.RED
-    GRAY = Fore.LIGHTBLACK_EX
 
 
 # =============================================================================
@@ -96,61 +76,97 @@ XC8_LINK_FLAGS = [
 ]
 
 
-def main():
+# Create the Typer app
+app = typer.Typer(
+    help="Simple compilation wrapper that calls xc8-wrapper with default arguments"
+)
+
+
+def version_callback(value: bool):
+    """Show version information"""
+    if value:
+        typer.echo(f"compile.py {__version__}")
+        raise typer.Exit()
+
+
+@app.command()
+def main(
+    version: bool = typer.Option(
+        False,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version and exit",
+    ),
+):
     """Call xc8-wrapper with default arguments"""
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(
-        description="Simple compilation wrapper that calls xc8-wrapper with default arguments",
-        prog="compile.py",
-    )
+    log.info("=== COMPILE WRAPPER ===")
 
-    parser.add_argument(
-        "--version", action="version", version=f"%(prog)s {__version__}"
-    )
+    # Create arguments object that mimics what xc8-wrapper CLI would create
+    class Args:
+        def __init__(self):
+            # Required arguments
+            self.cpu = DEFAULT_CPU
+            self.xc8_version = DEFAULT_XC8_VERSION
+            self.xc8_path = None
 
-    args = parser.parse_args()
+            # Compilation and linking flags
+            self.compile_flag = XC8_COMPILE_FLAGS
+            self.link_flag = XC8_LINK_FLAGS
 
-    print_colored("=== COMPILE WRAPPER ===", Colors.CYAN)
+            # Preprocessor arguments
+            self.define = None
+            self.undefine = None
+            self.include = None
+            self.keep_comments = False
+            self.preprocess_only = False
+            self.list_headers = False
+            self.list_macros = False
 
-    # Use the installed xc8-wrapper command
-    xc8_command = "xc8-wrapper"
+            # Compiler mode arguments
+            self.compile_only = False
+            self.assembly_only = False
+            self.verbose = False
+            self.suppress_warnings = False
+            self.save_temps = False
 
-    # Call xc8-wrapper with default arguments defined in this script
-    cmd = [
-        xc8_command,
-        "cc",  # Use cc tool
-        "--xc8-version",
-        DEFAULT_XC8_VERSION,
-        "--cpu",
-        DEFAULT_CPU,
-    ]
+            # Optimization arguments
+            self.optimize = None
 
-    # Add compilation flags - each flag as a separate argument using equals format
-    for flag in XC8_COMPILE_FLAGS:
-        cmd.append(f"--compile-flag={flag}")
+            # Language standard arguments
+            self.std = None
 
-    # Add linking flags - each flag as a separate argument using equals format
-    for flag in XC8_LINK_FLAGS:
-        cmd.append(f"--link-flag={flag}")
+            # File and directory arguments
+            self.build_dir = BUILD_DIR
+            self.source_dir = SOURCE_DIR
+            self.main_c_file = MAIN_C_FILE
+            self.output_hex = OUTPUT_HEX
+            self.output_elf = OUTPUT_ELF
+            self.output_p1 = OUTPUT_P1
+            self.output_map = OUTPUT_MAP
+            self.memory_file = MEMORY_FILE
 
-    print_colored(f"Calling xc8-wrapper with default arguments:", Colors.YELLOW)
-    print_colored(f"  - XC8 Version: {DEFAULT_XC8_VERSION}", Colors.GRAY)
-    print_colored(f"  - Target CPU: {DEFAULT_CPU}", Colors.GRAY)
-    print_colored(f"  - Compile Flags: {len(XC8_COMPILE_FLAGS)} flags", Colors.GRAY)
-    print_colored(f"  - Link Flags: {len(XC8_LINK_FLAGS)} flags", Colors.GRAY)
-    print_colored(
-        f"Command: {' '.join(cmd[:6])}... (total {len(cmd)} args)", Colors.CYAN
-    )
+    args = Args()
+
+    log.info("Calling xc8-wrapper with default arguments:")
+    log.debug(f"  - XC8 Version: {DEFAULT_XC8_VERSION}")
+    log.debug(f"  - Target CPU: {DEFAULT_CPU}")
+    log.debug(f"  - Compile Flags: {len(XC8_COMPILE_FLAGS)} flags")
+    log.debug(f"  - Link Flags: {len(XC8_LINK_FLAGS)} flags")
 
     try:
-        # Run xc8-wrapper and pass through its exit code
-        result = subprocess.run(cmd, check=False)
-        sys.exit(result.returncode)
+        # Call xc8_wrapper directly instead of using subprocess
+        handle_cc_tool(args)
+        log.info("✓ Compilation completed successfully")
 
+    except SystemExit as e:
+        if e.code != 0:
+            log.error(f"✗ Compilation failed with exit code {e.code}")
+            raise typer.Exit(e.code)
     except Exception as e:
-        print_colored(f"✗ Error running xc8-wrapper: {e}", Colors.RED)
-        sys.exit(1)
+        log.error(f"✗ Error during compilation: {e}")
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":
-    main()
+    app()

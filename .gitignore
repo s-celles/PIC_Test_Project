@@ -55,5 +55,6 @@ __pycache__/
 xc8-wrapper/
 ipecmd-wrapper/
 
-# Proprietary files (not to be shared)
+# Vendor files
+MPLABXLog.xml
 vendor/
