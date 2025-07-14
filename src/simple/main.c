@@ -34,6 +34,12 @@ void main(void) {
     TRISB = 0b00000000;
     ADCON1 = 0b00000110;
 
+    LED0 = 0;
+    LED1 = 0;
+    LED2 = 0;
+    LED3 = 0;
+    LED4 = 0;
+
     // Main loop
     while(1) {
         // Blinking sequence
