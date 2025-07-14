@@ -43,7 +43,7 @@ void main(void) {
     // Main loop
     while(1) {
         // Blinking sequence
-        LED4 = !LED4;        
+        LED2 = !LED2;        
         __delay_ms(500);       // 500 ms before toggle
     }
 }
