@@ -19,9 +19,11 @@ The program blinks LEDs connected to uC.
    pip install git+https://github.com/s-celles/xc8-wrapper.git
    pip install git+https://github.com/s-celles/ipecmd-wrapper.git
    ```
-3. **Clone/Download** this project
-4. **Compile**: `python compile.py`
-5. **Upload**: `python upload.py` (with programmer connected)
+3. **Install platform**: Follow the [PlatformIO installation guide](https://platformio.org/install) for your operating system 
+4. **Compile**: `pio run`
+5. **Upload**: `pio run --target upload` (with programmer connected)
+
+More information about the project can be found in the [documentation](https://s-celles.github.io/platform-pic8bit/platforms/pic8bit.html#build-and-upload).
 
 ## Hardware Configuration
 
