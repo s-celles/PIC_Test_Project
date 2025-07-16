@@ -68,14 +68,21 @@ ipecmd-wrapper -P 16F876A -T PK3 -F build/main.hex -W 5.0 --ipecmd-version 6.20
 This project uses two modern Python wrapper packages for Microchip tools:
 
 ### XC8 Wrapper Package
-- **Repository**: [github.com/s-celles/xc8-wrapper](https://github.com/s-celles/xc8-wrapper)
+- **Repository**: [github.com/s-celles/xc8-wrapper](https://github.com/s-celles/xc8-wrapper/)
 - **Documentation**: [s-celles.github.io/xc8-wrapper](https://s-celles.github.io/xc8-wrapper/)
 - **Purpose**: Comprehensive wrapper for XC8 C compiler toolchain
 
 ### IPECMD Wrapper Package
-- **Repository**: [github.com/s-celles/ipecmd-wrapper](https://github.com/s-celles/ipecmd-wrapper)
+- **Repository**: [github.com/s-celles/ipecmd-wrapper](https://github.com/s-celles/ipecmd-wrapper/)
 - **Documentation**: [s-celles.github.io/ipecmd-wrapper](https://s-celles.github.io/ipecmd-wrapper/)
 - **Purpose**: Wrapper for MPLAB IPE command-line programming tool
+
+## PlatformIO Platform
+
+### 8-bit PIC Platform
+- **Repository**: [github.com/s-celles/platform-pic8bit](https://github.com/s-celles/platform-pic8bit/)
+- **Documentation**: [s-celles.github.io/platform-pic8bit](https://s-celles.github.io/platform-pic8bit/)
+- **Purpose**: PlatformIO platform for Microchip 8-bit PIC microcontrollers
 
 ## Installation
 
