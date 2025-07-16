@@ -109,3 +109,11 @@ pip install git+https://github.com/s-celles/ipecmd-wrapper.git
 This project is released under the **Apache 2.0 License**. See the LICENSE file for details.
 
 **You are responsible for obtaining proper licenses for any Microchip tools you use with these wrappers.**
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Sébastien Celles](https://github.com/s-celles) for PIC developers community.
+
+</div>
