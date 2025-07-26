@@ -11,3 +11,7 @@
 	path = platform-pic8bit
 	url = https://github.com/s-celles/platform-pic8bit
 	branch = main
+[submodule "atpack-python-parser"]
+	path = atpack-python-parser
+	url = https://github.com/s-celles/atpack-python-parser
+	branch = main
