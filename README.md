@@ -22,9 +22,10 @@ A demonstration project for the PIC 16F876A (4MHz crystal) using the XC8 v3.00 c
 - **Capacitor:** 100nF (decoupling)
 - **Programmer:** PICkit3, PICkit4, or PICkit5
 
-## 🐍 Python Wrappers
-- [`xc8-wrapper`](https://github.com/s-celles/xc8-wrapper) ([docs](https://s-celles.github.io/xc8-wrapper/)) — XC8 toolchain
-- [`ipecmd-wrapper`](https://github.com/s-celles/ipecmd-wrapper) ([docs](https://s-celles.github.io/ipecmd-wrapper/)) — MPLAB IPE command-line
+## 🐍 Python Tools
+- [`xc8-wrapper`](https://github.com/s-celles/xc8-wrapper) ([docs](https://s-celles.github.io/xc8-wrapper/)) — Python wrapper for XC8 toolchain to compile C & asm files
+- [`ipecmd-wrapper`](https://github.com/s-celles/ipecmd-wrapper) ([docs](https://s-celles.github.io/ipecmd-wrapper/)) — Python wrapper for MPLAB IPE command-line to upload hex files
+- [`atpack-python-parser`](https://github.com/s-celles/atpack-python-parser) ([docs](https://s-celles.github.io/atpack-python-parser/)) — Python parser for Atmel/Microchip device packs (atpack files)
 
 ## ⚡ PlatformIO Platform
 - [`platform-pic8bit`](https://github.com/s-celles/platform-pic8bit) ([docs](https://s-celles.github.io/platform-pic8bit/)) — PlatformIO for 8-bit PIC
