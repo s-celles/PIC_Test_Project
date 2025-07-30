@@ -15,3 +15,7 @@
 	path = atpack-python-parser
 	url = https://github.com/s-celles/atpack-python-parser
 	branch = main
+[submodule "xc8plusplus"]
+	path = xc8plusplus
+	url = https://github.com/s-celles/xc8plusplus
+	branch = main
